@@ -1,4 +1,6 @@
-﻿#include "PEB_dissect.h"
+﻿#include <iostream>
+
+#include "PEB_dissect.h"
 
 // handy func.
 LPVOID mw32GetPeb() {
@@ -11,13 +13,15 @@ LPVOID mw32GetPeb() {
 #endif
 }
 
-using namespace std;
-
 int main()
 {
+	// Using this would let u grab PEB easily, but more bratant.
 	HMODULE hModule = GetModuleHandle("ntdll.dll");
-	cout << GetProcAddress(hModule, "RtlGetCurrentPeb") << endl;
-	cout << (short)reinterpret_cast<PPEB>(mw32GetPeb())->BeingDebugged << endl;
+	std::cout << "RtlGetCurrentPeb --> " << GetProcAddress(hModule, "RtlGetCurrentPeb") << std::endl;
+
+	// Prints ImagePathName
+	std::cout << reinterpret_cast<PPEB>(mw32GetPeb())->ProcessParameters->ImagePathName.Buffer << std::endl;
+
 	getchar();
 	return 0;
 }
